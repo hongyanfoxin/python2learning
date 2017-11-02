@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 # Why Sequences Are Iterable: The iter Function
 # Whenever the interpreter needs to iterate over an object x, it automatically calls iter(x).
@@ -7,6 +9,10 @@
 #   an iterator that attempts to fetch items in order, starting from index 0 (zero).
 #   3. If that fails, Python raises TypeError, usually saying “C object is not iterable,” where
 #   C is the class of the target object.
+
+# I guess the sequence protocol include:
+#   1. __getitem__
+#   2. __len__
 """
 
 import re
