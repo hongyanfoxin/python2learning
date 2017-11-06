@@ -160,7 +160,7 @@ def do_job_single_processes(jobfunc, iterator, ncores):
     keep_running = True
     process_dict = {}  # Dict containing all subprocees
 
-    while len(process_dict)>0 or keep_running:
+    while len(process_dict) > 0 or keep_running:
 
         terminated_procs_pids = []
         # First check if some processes did finish their job
