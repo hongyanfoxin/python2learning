@@ -1,0 +1,37 @@
+RuntimeError: Lock objects should only be shared between processes through inheritance
+
+One is to create Manager() and pass a Manager.Lock():
+def main():
+    iterable = [1, 2, 3, 4, 5]
+    pool = multiprocessing.Pool()
+    m = multiprocessing.Manager()
+    l = m.Lock()
+    func = partial(target, l)
+    pool.map(func, iterable)
+    pool.close()
+    pool.join()
+This is a little bit heavyweight, though; using a Manager requires spawning another process to host the Manager server. And all calls to acquire/release the lock have to be sent to that server via IPC.
+
+The other option is to pass the regular multiprocessing.Lock() at Pool creation time, using the initializer kwarg. This will make your lock instance global in all the child workers:
+def target(iterable_item):
+    for item in items:
+        # Do cool stuff
+        if (... some condition here ...):
+            lock.acquire()
+            # Write to stdout or logfile, etc.
+            lock.release()
+def init(l):
+    global lock
+    lock = l
+
+def main():
+    iterable = [1, 2, 3, 4, 5]
+    l = multiprocessing.Lock()
+    pool = multiprocessing.Pool(initializer=init, initargs=(l,))
+    pool.map(target, iterable)
+    pool.close()
+    pool.join()
+The second solution has the side-effect of no longer requiring partial.
+
+还要看一下stackoverflow上的这篇
+https://stackoverflow.com/questions/20742637/understanding-multiprocessing-shared-memory-management-locks-and-queues-in-pyt
