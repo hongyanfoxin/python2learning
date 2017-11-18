@@ -39,6 +39,14 @@ def test_whether_iterable():
     for word in s:
         print(word)
 
+    it = iter(s) # 从可迭代的对象中获取迭代器，此处的结果是一个generator
+    while True:
+        try:
+            print(next(it)) # 在迭代器上调用next函数获取下一个元素，generator的功能：produce the values of the expressions passed to yield
+        except StopIteration: # 没有元素了迭代器会抛出StopIteration异常
+            del it # 释放对 it 的引用，即废弃迭代器对象
+            break
+
     print(list(s))
 
 

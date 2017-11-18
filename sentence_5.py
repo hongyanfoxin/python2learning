@@ -2,6 +2,7 @@
 
 """
 A Generator Expression
+So, a generator expression produces a generator
 
 A generator expression can be understood as a lazy version of a list comprehension:
 it does not eagerly build a list, but returns a generator that will lazily produce the items on demand.
